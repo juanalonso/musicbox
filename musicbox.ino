@@ -143,12 +143,15 @@ int sendStreamChange(char* stream) {
   Serial.print("Requesting stream: ");
   Serial.println(stream);
 
-  client.begin(String("http://") + boseIP + ":" + bosePort + "/now_playing");
-  int httpCode = client.GET();
+  client.begin(String("http://") + boseIP + ":" + bosePort + "/select");
+  client.addHeader("Content-Type", "Content-Type: application/xml");
+  int httpCode = client.POST(String("")+"<ContentItem source='SPOTIFY' sourceAccount='"+spotifyAcc+"' type='uri' location='"+stream+"'></ContentItem>");
 
-  //  String payload = client.getString();
-  //  Serial.println(payload);
+  //String payload = client.getString();
+  //Serial.println(payload);
 
+  client.end();
+  
   digitalWrite(LED_BUILTIN, HIGH);
   return httpCode == HTTP_CODE_OK ? 1 : 0;
 
