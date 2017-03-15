@@ -2,8 +2,8 @@
 #include "constants.h"
 
 //Rotary pins
-int encPinA = D1;
-int encPinB = D2;
+const int encPinA = D1;
+const int encPinB = D2;
 
 //Delay for unsupervised stream change
 int strChangeDelay = 750;
@@ -41,24 +41,8 @@ void setup() {
 
   Serial.begin (19200);
 
-  Serial.print("Connecting to ");
-  Serial.print(ssid);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-
-  pinMode(encPinA, INPUT_PULLUP);
-  digitalWrite(encPinA, HIGH);
-  lastEncPinAVal = digitalRead(encPinA);
-
-  pinMode(encPinB, INPUT_PULLUP);
-  digitalWrite(encPinB, HIGH);
+  initHardware();
+  initWiFi();
 
 }
 
@@ -72,7 +56,7 @@ void loop() {
       //We want to change the stream when the timer expires,
       //unles the rotary is in the same position we started
       if (strIndex != playingStrIndex) {
-        sendStreamChange();
+        sendStreamChange(streams[strIndex]);
         playingStrIndex = strIndex;
       }
     }
@@ -114,38 +98,74 @@ void loop() {
 }
 
 
-void sendStreamChange() {
+
+void initHardware() {
+
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
+  
+  pinMode(encPinA, INPUT_PULLUP);
+  digitalWrite(encPinA, HIGH);
+  lastEncPinAVal = digitalRead(encPinA);
+
+  pinMode(encPinB, INPUT_PULLUP);
+  digitalWrite(encPinB, HIGH);
+
+}
+
+
+
+void initWiFi() {
+
+  byte ledStatus = LOW;
+
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    digitalWrite(LED_BUILTIN, ledStatus); // Write LED high/low
+    ledStatus = !ledStatus;
+    delay(100);
+  }
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+  digitalWrite(LED_BUILTIN, HIGH);
+
+}
+
+int sendStreamChange(char* stream) {
+
+  digitalWrite(LED_BUILTIN, LOW);
+
   WiFiClient client;
 
   if (!client.connect(boseIP, bosePort)) {
-    Serial.println("connection failed");
-    Serial.println("wait 5 sec...");
-    delay(5000);
-    return;
+    return 0;
   }
 
-  String boseURL = "/now_playing";
-  Serial.print("Requesting URL: ");
-  Serial.println(boseURL);
+  Serial.print("Requesting stream: ");
+  Serial.println(stream);
 
   // This will send the request to the server
-  client.print(String("GET ") + boseURL + " HTTP/1.1\r\n" +
-               "Host: " + boseIP + "\r\n" +
-               "Connection: close\r\n\r\n");
-  unsigned long timeout = millis();
+  client.print(String("GET ") + "/now_playing HTTP/1.1\r\nHost: " + boseIP + "\r\nConnection: close\r\n\r\n");
+  /*unsigned long timeout = millis();
   while (client.available() == 0) {
+    //TODO: test failed connections
     if (millis() - timeout > 5000) {
       Serial.println(">>> Client Timeout !");
       client.stop();
       return;
     }
-  }
+  }*/
 
-  // Read all the lines of the reply from server and print them to Serial
   while (client.available()) {
     String line = client.readStringUntil('\r');
-    Serial.print(line);
+    //Serial.print(line);
   }
+
+  digitalWrite(LED_BUILTIN, HIGH);
+  return 1;
+
 
 }
 
