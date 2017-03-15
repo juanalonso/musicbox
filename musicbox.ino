@@ -1,4 +1,5 @@
 #include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 #include "constants.h"
 
 //Rotary pins
@@ -103,7 +104,7 @@ void initHardware() {
 
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
-  
+
   pinMode(encPinA, INPUT_PULLUP);
   digitalWrite(encPinA, HIGH);
   lastEncPinAVal = digitalRead(encPinA);
@@ -137,34 +138,19 @@ int sendStreamChange(char* stream) {
 
   digitalWrite(LED_BUILTIN, LOW);
 
-  WiFiClient client;
-
-  if (!client.connect(boseIP, bosePort)) {
-    return 0;
-  }
+  HTTPClient client;
 
   Serial.print("Requesting stream: ");
   Serial.println(stream);
 
-  // This will send the request to the server
-  client.print(String("GET ") + "/now_playing HTTP/1.1\r\nHost: " + boseIP + "\r\nConnection: close\r\n\r\n");
-  /*unsigned long timeout = millis();
-  while (client.available() == 0) {
-    //TODO: test failed connections
-    if (millis() - timeout > 5000) {
-      Serial.println(">>> Client Timeout !");
-      client.stop();
-      return;
-    }
-  }*/
+  client.begin(String("http://") + boseIP + ":" + bosePort + "/now_playing");
+  int httpCode = client.GET();
 
-  while (client.available()) {
-    String line = client.readStringUntil('\r');
-    //Serial.print(line);
-  }
+  //  String payload = client.getString();
+  //  Serial.println(payload);
 
   digitalWrite(LED_BUILTIN, HIGH);
-  return 1;
+  return httpCode == HTTP_CODE_OK ? 1 : 0;
 
 
 }
