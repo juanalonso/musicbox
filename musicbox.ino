@@ -2,30 +2,7 @@
 #include <ESP8266HTTPClient.h>
 #include "constants.h"
 
-//Rotary pins
-const int encPinA = D1;
-const int encPinB = D2;
 
-//Delay for unsupervised stream change
-int strChangeDelay = 750;
-
-//Spotify streams
-char* streams[] = {
-  "spotify:station:user:1117954296:cluster:3uOCouLFR4bVx0XeiQJSbl", //DailyMx 1
-  "spotify:station:user:1117954296:cluster:69lxxQvsfAIoQbB20bEPFC", //DailyMx 2
-  "spotify:station:user:1117954296:cluster:1G1mX30GpUJqOr1QU2eBSs", //DailyMx 3
-  "spotify:station:user:1117954296:cluster:4m2iq2WEoxSFvOZd130HIQ", //DailyMx 4
-  "spotify:station:user:1117954296:cluster:5VTWoYYizcOY3uIKnxeCGI", //DailyMx 5
-  "spotify:station:user:1117954296:cluster:4lianjyuR1tqf6oUX8kjrZ", //DailyMx 6
-  "spotify:user:1117954296:playlist:53cVQEQs3AJg2apfGOJiSG",        //770
-  "spotify:user:1117954296:playlist:4L4k1nHskd2lAl4NVUKBru",        //Descubrimientos
-  "spotify:user:1117954296:playlist:2j2qjETKivkmOpbYgrToUT",        //... pero no tanto
-  "spotify:artist:1G1mX30GpUJqOr1QU2eBSs",                          //Radio - Yazoo
-  "spotify:user:aegisthus:playlist:1vY5xwZqNERs6V2aslcZWv",         //Barbudos
-};
-
-//Utility
-int strSize = sizeof(streams) / sizeof(char*);
 
 //Array offset
 int strIndex = 0;
@@ -57,7 +34,11 @@ void loop() {
       //We want to change the stream when the timer expires,
       //unles the rotary is in the same position we started
       if (strIndex != playingStrIndex) {
-        sendStreamChange(streams[strIndex]);
+        setStream(streams[strIndex]);
+        delay(1000);
+        keyPress("STOP");
+        keyPress("SHUFFLE_ON");
+        keyPress("NEXT_TRACK");
         playingStrIndex = strIndex;
       }
     }
@@ -96,6 +77,10 @@ void loop() {
     }
     lastEncPinAVal = encPinAVal;
   }
+
+  //keyPress("NEXT_TRACK");
+  //keyPress("THUMBS_UP");
+
 }
 
 
@@ -134,28 +119,50 @@ void initWiFi() {
 
 }
 
-int sendStreamChange(char* stream) {
+
+
+int setStream(char* stream) {
+
+  String xml = String("") + "<ContentItem source='SPOTIFY' sourceAccount='" + spotifyAcc + "' type='uri' location='" + stream + "'></ContentItem>";
+  bosePOST("select", xml);
+
+}
+
+
+
+int keyPress(char* key) {
+
+  String xml = String("<key state=\"press\" sender=\"Gabbo\">") + key + "</key>";
+  bosePOST("key", xml);
+  
+  delay(100);
+  
+  xml = String("<key state=\"release\" sender=\"Gabbo\">") + key + "</key>";
+  bosePOST("key", xml);
+
+}
+
+
+
+int bosePOST(char* method, String xml) {
 
   digitalWrite(LED_BUILTIN, LOW);
 
   HTTPClient client;
 
-  Serial.print("Requesting stream: ");
-  Serial.println(stream);
+  Serial.print("Workload: ");
+  Serial.println(xml);
 
-  client.begin(String("http://") + boseIP + ":" + bosePort + "/select");
+  client.begin(String("http://") + boseIP + ":" + bosePort + "/" + method);
   client.addHeader("Content-Type", "Content-Type: application/xml");
-  int httpCode = client.POST(String("")+"<ContentItem source='SPOTIFY' sourceAccount='"+spotifyAcc+"' type='uri' location='"+stream+"'></ContentItem>");
+  int httpCode = client.POST(xml);
 
   //String payload = client.getString();
   //Serial.println(payload);
 
   client.end();
-  
+
   digitalWrite(LED_BUILTIN, HIGH);
   return httpCode == HTTP_CODE_OK ? 1 : 0;
 
-
 }
-
-
