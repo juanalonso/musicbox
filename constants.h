@@ -1,23 +1,26 @@
 //Spotify data
-char* spotifyAcc = "1117954296";
+const char* spotifyAcc = "1117954296";
 
 //Bose data
 char* boseIP = "";
-int bosePort = 8090;
+const int bosePort = 8090;
 
 //WiFi data
 const char* ssid = "";
 const char* password = "";
 
 //Rotary pins
-const int encPinA = D1;
-const int encPinB = D2;
+const int encPinA = D0;
+const int encPinB = D1;
+const int nextPin = D7;
+const int lovePin = D2;
 
 //Delay for unsupervised stream change
-int strChangeDelay = 750;
+const int strChangeDelay = 750;
 
 //Spotify streams
-char* streams[] = {
+const String streams[] = {
+
   //DailyMx 1
   "spotify:station:user:1117954296:cluster:3uOCouLFR4bVx0XeiQJSbl", 
   //DailyMx 2
@@ -32,7 +35,7 @@ char* streams[] = {
   "spotify:station:user:1117954296:cluster:4lianjyuR1tqf6oUX8kjrZ", 
   
   //Radio - Yazoo
-  "spotify:artist:1G1mX30GpUJqOr1QU2eBSs",                          
+  "spotify:station:artist:1G1mX30GpUJqOr1QU2eBSs",                          
   
   //"Release Radar",
   "spotify:user:spotify:playlist:37i9dQZEVXbfgH0TtYCV1k",
@@ -97,4 +100,4 @@ char* streams[] = {
 };
 
 //Utility
-int strSize = sizeof(streams) / sizeof(char*);
+const int strSize = sizeof(streams) / sizeof(char*);
