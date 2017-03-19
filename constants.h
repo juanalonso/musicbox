@@ -10,10 +10,13 @@ const char* ssid = "";
 const char* password = "";
 
 //Rotary pins
-const int encPinA = D0;
-const int encPinB = D1;
+const int encPinA = D1;
+const int encPinB = D0;
 const int nextPin = D7;
 const int lovePin = D2;
+
+//Display I2C Address
+#define segDisplay B0111000
 
 //Delay for unsupervised stream change
 const int strChangeDelay = 750;
@@ -100,4 +103,4 @@ const String streams[] = {
 };
 
 //Utility
-const int strSize = sizeof(streams) / sizeof(char*);
+const int strSize = sizeof(streams) / sizeof(String);
