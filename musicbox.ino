@@ -18,6 +18,11 @@ boolean countdown = false;
 boolean butNextCurr, butNextLast;
 boolean butLoveCurr, butLoveLast;
 
+boolean dispCanMaxIntensity = true;
+boolean dispIsFadingOut = false;
+int dispIntensityCurr = disIntensityMin;
+unsigned long fadeoutTime;
+
 void setup() {
 
   //Serial.begin (19200);
@@ -31,6 +36,19 @@ void setup() {
 
 void loop() {
 
+  //DISPLAY FADE-OUT
+  if (dispIsFadingOut) {
+    if (fadeoutTime <= millis()) {
+      dispIntensityCurr--;
+      setDisplayIntensity(dispIntensityCurr);
+      fadeoutTime = millis() + disIntensityDelay;
+      //Serial.println(dispIntensityCurr);
+      if (dispIntensityCurr <= disIntensityMin) {
+        dispIsFadingOut = false;
+      }
+    }
+  }
+
   //COUNTDOWN
   if (countdown) {
     if (countdownTime <= millis()) {
@@ -42,8 +60,8 @@ void loop() {
         setStream(streams[strIndex]);
         delay(1000);
         //keyPress("STOP");
-        if (streams[strIndex].indexOf(":cluster:") == -1 && 
-            streams[strIndex].indexOf(":station:artist:") == -1 && 
+        if (streams[strIndex].indexOf(":cluster:") == -1 &&
+            streams[strIndex].indexOf(":station:artist:") == -1 &&
             streams[strIndex].indexOf(":station:user:") == -1) {
           keyPress("SHUFFLE_ON");
           keyPress("NEXT_TRACK");
@@ -52,6 +70,10 @@ void loop() {
         }
         playingStrIndex = strIndex;
       }
+      dispIntensityCurr = disIntensityMax;
+      dispIsFadingOut = true;
+      dispCanMaxIntensity = true;
+      fadeoutTime = millis() + disIntensityDelay;
     }
   }
 
@@ -61,6 +83,12 @@ void loop() {
 
   //Something changed
   if (encPinAVal != lastEncPinAVal) {
+
+    if (dispCanMaxIntensity) {
+      setDisplayIntensity(disIntensityMax);
+      dispCanMaxIntensity = false;
+      dispIsFadingOut = false;
+    }
 
     //Software debouncing. Good enough.
     delay(1);
@@ -156,10 +184,7 @@ void initHardware() {
   Wire.write(0x03); //Decode mode for digits 0-1
   Wire.endTransmission(1);
 
-  Wire.beginTransmission(segDisplay);
-  Wire.write(0x02); //Intensity command
-  Wire.write(0x30); //0x00(min) to 0x3F(max)
-  Wire.endTransmission(1);
+  setDisplayIntensity(disIntensityMin);
 
   Wire.beginTransmission(segDisplay);
   Wire.write(0x03); //Scan limit command
@@ -250,3 +275,12 @@ int bosePOST(char* method, String xml) {
   return httpCode == HTTP_CODE_OK ? 1 : 0;
 
 }
+
+void setDisplayIntensity(int disIntensity) {
+  Wire.beginTransmission(segDisplay);
+  Wire.write(0x02); //Intensity command
+  Wire.write(disIntensity);
+  Wire.endTransmission(1);
+
+}
+

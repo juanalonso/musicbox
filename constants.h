@@ -10,16 +10,19 @@ const char* ssid = "";
 const char* password = "";
 
 //Rotary pins
-const int encPinA = D1;
-const int encPinB = D0;
-const int nextPin = D7;
-const int lovePin = D2;
+#define encPinA D1
+#define encPinB D0
+#define nextPin D7
+#define lovePin D2
 
 //Display I2C Address
 #define segDisplay B0111000
+#define disIntensityMax 0x30
+#define disIntensityMin 0x01 //0x00(min) to 0x3F(max)
+#define disIntensityDelay 60
 
 //Delay for unsupervised stream change
-const int strChangeDelay = 750;
+#define strChangeDelay 750
 
 //Spotify streams
 const String streams[] = {
