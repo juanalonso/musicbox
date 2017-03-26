@@ -37,7 +37,7 @@ const String streams[] = {
   //DailyMx 6
   "spotify:station:user:1117954296:cluster:4lianjyuR1tqf6oUX8kjrZ", 
   
-  //Radio - Yazoo
+  //Radio - Yazoo, 7
   "spotify:station:artist:1G1mX30GpUJqOr1QU2eBSs",                          
   
   //"Release Radar",
@@ -45,20 +45,20 @@ const String streams[] = {
   //"Discover Weekly",
   "spotify:user:spotify:playlist:37i9dQZEVXcKvwuegC9qpk",
 
-  //"770 - Primeras canciones",
-  "spotify:user:1117954296:playlist:53cVQEQs3AJg2apfGOJiSG",
+  //"770 - Primeras canciones", 10
+  "spotify:station:user:1117954296:playlist:53cVQEQs3AJg2apfGOJiSG",
   //"Descubrimientos",
-  "spotify:user:1117954296:playlist:4L4k1nHskd2lAl4NVUKBru",
+  "spotify:station:user:1117954296:playlist:4L4k1nHskd2lAl4NVUKBru",
   //"Ambient a lo que da",
-  "spotify:user:1117954296:playlist:7fa3RVGLtWCD4D9IA1JHQK",
+  "spotify:station:user:1117954296:playlist:7fa3RVGLtWCD4D9IA1JHQK",
   //"Italianismos",
-  "spotify:user:1117954296:playlist:5xAjLuI5RT3Qi5TTwPs7lk",
+  "spotify:station:user:1117954296:playlist:5xAjLuI5RT3Qi5TTwPs7lk",
   //"Me gustan, pero no tanto",
-  "spotify:user:1117954296:playlist:2j2qjETKivkmOpbYgrToUT",
+  "spotify:station:user:1117954296:playlist:2j2qjETKivkmOpbYgrToUT",
   //"Versiones",
-  "spotify:user:1117954296:playlist:0eFP6ljmpb42dAvu9xFJq5",
+  "spotify:station:user:1117954296:playlist:0eFP6ljmpb42dAvu9xFJq5",
 
-  //"Michael Nyman - Composer Weekly #017",
+  //"Michael Nyman - Composer Weekly #017", 16
   "spotify:user:composerweekly:playlist:6zQwQZB1fIcSxB6k6cq3Pd",
   //"John Adams - Composer Weekly #067",
   "spotify:user:composerweekly:playlist:4Qlh7bWzcNFTirntWLz3x6",
@@ -69,7 +69,7 @@ const String streams[] = {
   //"This Is: Philip Glass",
   "spotify:user:spotify:playlist:0Qg1HXHsYxfWOmFClFpGuG",
 
-  //"Indie Classical: Composed In 21st Century",
+  //"Indie Classical: Composed In 21st Century", 21
   "spotify:user:spotify:playlist:51lgGoMbd6Oto4rcq2UOqn",
   //"Classical X",
   "spotify:user:spotify:playlist:3Jc2HKlFVl1Cde9fyQNjhG",
@@ -80,26 +80,26 @@ const String streams[] = {
   //"The Sound of Ambient",
   "spotify:user:thesoundsofspotify:playlist:6CIyPj34GTpAkNwoWToLNT",
 
-  //"Yo no hablo español",
-  "spotify:user:fresus:playlist:0YJlDSrODSVEATX1XRIx9b",
+  //"Yo no hablo español", 26
+  "spotify:station:user:fresus:playlist:0YJlDSrODSVEATX1XRIx9b",
   //"8-bit",
-  "spotify:user:fresus:playlist:5C6N9k77yBk1gQm9UoPZEW",
+  "spotify:station:user:fresus:playlist:5C6N9k77yBk1gQm9UoPZEW",
   //"Frenchy but chic",
-  "spotify:user:1126009907:playlist:2i6ScpsmEDixtzoeEjHXbY",
+  "spotify:station:user:1126009907:playlist:2i6ScpsmEDixtzoeEjHXbY",
   //"Chicas y Rock&Roll",
-  "spotify:user:adri:playlist:0fQQuFjmwbfunbjQPx5srp",
+  "spotify:station:user:adri:playlist:0fQQuFjmwbfunbjQPx5srp",
   //"Te imagino al volante de la nave espacial",
-  "spotify:user:rblanco:playlist:3bFB51XgnQRxd7uma6L4uP",
+  "spotify:station:user:rblanco:playlist:3bFB51XgnQRxd7uma6L4uP",
   //"Fiesta Navideña Está Pasando Pinchada",
-  "spotify:user:1126009907:playlist:3mG0QWlLS6wZuAnTSgdwx0",
+  "spotify:station:user:1126009907:playlist:3mG0QWlLS6wZuAnTSgdwx0",
   //"sing me to sleep",
-  "spotify:user:el_farero:playlist:4Ybyor7xEzucpyqZLrECja",
+  "spotify:station:user:el_farero:playlist:4Ybyor7xEzucpyqZLrECja",
   //"Mamarracha",
-  "spotify:user:aegisthus:playlist:5v3jndUao1IXQdrwmKjGoK",
+  "spotify:station:user:aegisthus:playlist:5v3jndUao1IXQdrwmKjGoK",
   //"New sounds for Kokuma",
-  "spotify:user:therobot:playlist:1wSZWUQi2TbQgpgxOSeNzZ",
+  "spotify:station:user:therobot:playlist:1wSZWUQi2TbQgpgxOSeNzZ",
   //"Música electrónica para barbudos principiantes",
-  "spotify:user:aegisthus:playlist:1vY5xwZqNERs6V2aslcZWv",
+  "spotify:station:user:aegisthus:playlist:1vY5xwZqNERs6V2aslcZWv",
 };
 
 //Utility

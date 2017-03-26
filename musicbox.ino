@@ -20,7 +20,7 @@ boolean butLoveCurr, butLoveLast;
 
 void setup() {
 
-  Serial.begin (19200);
+  //Serial.begin (19200);
 
   initHardware();
   initWiFi();
@@ -38,11 +38,13 @@ void loop() {
       //We want to change the stream when the timer expires,
       //unles the rotary is in the same position we started
       if (strIndex != playingStrIndex) {
-        Serial.println(">>> GO STREAM");
+        //Serial.println(">>> GO STREAM");
         setStream(streams[strIndex]);
         delay(1000);
         //keyPress("STOP");
-        if (streams[strIndex].indexOf(":cluster:") == -1 && streams[strIndex].indexOf(":station:artist:") == -1) {
+        if (streams[strIndex].indexOf(":cluster:") == -1 && 
+            streams[strIndex].indexOf(":station:artist:") == -1 && 
+            streams[strIndex].indexOf(":station:user:") == -1) {
           keyPress("SHUFFLE_ON");
           keyPress("NEXT_TRACK");
         } else {
@@ -187,16 +189,16 @@ void initWiFi() {
 
   byte ledStatus = LOW;
 
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
+  //Serial.print("Connecting to ");
+  //Serial.println(ssid);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     digitalWrite(LED_BUILTIN, ledStatus); // Write LED high/low
     ledStatus = !ledStatus;
     delay(200);
   }
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
+  //Serial.print("IP address: ");
+  //Serial.println(WiFi.localIP());
   digitalWrite(LED_BUILTIN, HIGH);
 
 }
